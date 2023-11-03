@@ -20,24 +20,24 @@ namespace DEAIC6_HFT_2023241.Models
         public DateTime LaunchDate { get; set; }
         public DateTime LandDate { get; set; }
 
-        public int RoverStatus { get; set; }
+        public int VisitedPlaceId { get; set; }
         public int BuilderId { get; set; }
 
-        public virtual VisitedPlaces VisitedPlaces { get; set; }
-        public virtual RoverBuilder RoverBuilder { get; set; }
+        public virtual VisitedPlaces VisitedPlaces { get; private set; }
+        public virtual RoverBuilder RoverBuilders { get; private set; }
 
 
         public Rover(string line)
         {
-            //RoverId#RoverName#LaunchDate#LandDate#RoverBuilder#VisitedPlaces#BuilderId#RoverStatus
+            //RoverId#RoverName#LaunchDate#LandDate#VisitedPlaceId#BuilderId
             //1 Active 0 not Active -1 will be active
             string[] roverline = line.Split('#');
             RoverId = int.Parse(roverline[0]);
             RoverName = roverline[1];
             LaunchDate = DateTime.Parse(roverline[2]);
             LandDate = DateTime.Parse(roverline[3]);
-            RoverStatus = int.Parse(roverline[6]);
-            BuilderId = int.Parse(roverline[5]);
+            VisitedPlaceId = int.Parse(roverline[6]);
+            BuilderId = int.Parse(roverline[7]);
         }
     }
 }
