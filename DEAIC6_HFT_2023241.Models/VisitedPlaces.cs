@@ -19,15 +19,18 @@ namespace DEAIC6_HFT_2023241.Models
         public string PlanetType { get; set;}
         [Required]
         public double Distance { get; set; }
-        [ForeignKey(nameof(Rover.RoverId))]
-        //egy helyet tobb rover is meglatogat
-        public int RoverId { get; set; }
 
-        public virtual ICollection<Rover> Rovers { get; set; }
+        public virtual ICollection<RoverBuilder> RoverBuilders { get; set; }
 
         public VisitedPlaces(string line)
         {
-            
+            string[] visitedPlacesLine = line.Split('#');
+            PlaceId = int.Parse(visitedPlacesLine[0]);
+            PlanetName = visitedPlacesLine[1];
+            PlanetType = visitedPlacesLine[2];
+            Distance = double.Parse(visitedPlacesLine[3]);
         }
+
+        //PlaceId#PlanetName#PlanetType#Distance
     }
 }
