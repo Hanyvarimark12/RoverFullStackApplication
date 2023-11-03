@@ -16,7 +16,16 @@ namespace DEAIC6_HFT_2023241.Models
         [StringLength(60)]
         public string BuilderName { get; set; }
 
-        public virtual ICollection<Rover> Rovers { get; set; }
+        public virtual ICollection<VisitedPlaces> VisitedPlaces { get; set; }
+
+        public RoverBuilder(string line)
+        {
+            string[] builderLine = line.Split('#');
+            BuilderId = int.Parse(builderLine[0]);
+            BuilderName = builderLine[1];
+        }
+
+        //BuilderId#BuilderName
 
     }
 }
