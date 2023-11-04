@@ -7,7 +7,7 @@ namespace DEAIC6_HFT_2023241.Repository
         IQueryable<T> ReadAll();
         T Read(int id);
         void Create(T element);
-        void Update(T element);
+        void Update(T Element);
         void Delete(int id);
     }
 }
