@@ -33,6 +33,6 @@ namespace DEAIC6_HFT_2023241.Repository
         }
 
         public abstract T Read(int id);
-        public abstract void Update(T element);
+        public abstract void Update(T Element);
     }
 }
