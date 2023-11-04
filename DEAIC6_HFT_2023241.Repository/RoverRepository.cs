@@ -19,10 +19,10 @@ namespace DEAIC6_HFT_2023241.Repository
 
         public override void Update(Rover element)
         {
-            var old = Read(element.RoverId);
-            foreach(var prop in old.GetType().GetProperties())
+            var Old = Read(element.RoverId);
+            foreach(var prop in Old.GetType().GetProperties())
             {
-                prop.SetValue(old, prop.GetValue(element));
+                prop.SetValue(Old, prop.GetValue(element));
             }
             ctx.SaveChanges();
         }
