@@ -9,21 +9,17 @@ using System.Threading.Tasks;
 
 namespace DEAIC6_HFT_2023241.Logic
 {
-    internal class VisitedPlacesLogic
+    public class VisitedPlacesLogic : IVisitedPlacesLogic
     {
         IRepository<VisitedPlaces> visitedplaces_repo;
-        IRepository<Rover> rover_repo;
-        IRepository<RoverBuilder> builder_repo;
 
-        public VisitedPlacesLogic(IRepository<VisitedPlaces> visitedplaces_repo, IRepository<Rover> rover_repo, IRepository<RoverBuilder> builder_repo)
+        public VisitedPlacesLogic(IRepository<VisitedPlaces> visitedplaces_repo)
         {
             this.visitedplaces_repo = visitedplaces_repo;
-            this.rover_repo = rover_repo;
-            this.builder_repo = builder_repo;
         }
         public void Create(VisitedPlaces element)
         {
-            if(element.PlaceId == null || element.Distance < 0)
+            if (element.PlaceId == null || element.Distance < 0)
             {
                 throw new ArgumentException("PlaceId cannot be null!/Distance cannot be negative!");
             }
@@ -41,7 +37,7 @@ namespace DEAIC6_HFT_2023241.Logic
         public VisitedPlaces Read(int id)
         {
             var visitedPlace = this.visitedplaces_repo.Read(id);
-            if(visitedPlace == null)
+            if (visitedPlace == null)
             {
                 throw new ArgumentException("Visited Place cannot be found!");
             }
@@ -60,20 +56,82 @@ namespace DEAIC6_HFT_2023241.Logic
 
         public IEnumerable<RoverTraveled> VisitedByBuilder()
         {
-            //visitedplace how many time by builder
-            return (IEnumerable<RoverTraveled>)from visitedplace in this.visitedplaces_repo.ReadAll()
-                              group visitedplace by visitedplace.PlaceId into builder
-                              select new RoverTraveled()
-                              {
-                                  VisitedPlaceId = builder.Key,
-                                  Builders = visitedplaces_repo.ReadAll().Select(t => t.RoverBuilders).Count()
-                              };
+            //avg time to planet
+            var builder = from x in visitedplaces_repo.ReadAll()
+                          orderby x.RoverBuilders.Select(t => t.Rovers.Min(t => t.LaunchDate)).First()
+                          select new RoverTraveled()
+                          {
+                              VisitedPlaceId = x.PlaceId,
+                              Landing = x.RoverBuilders.Select(t => t.Rovers.Min(t => t.LaunchDate)).FirstOrDefault(),
+                              Name = x.PlanetName
+                          };
+
+                          
+
+            return builder;
+        }
+
+        public RoverNumberByPlanet MostRoverNumber()
+        {
+            //builder sent the most rover to planet
+            var builder = from x in visitedplaces_repo.ReadAll()
+                          orderby x.RoverBuilders.Select(t => t.Rovers.Count()).First() descending
+                          select new RoverNumberByPlanet()
+                          {
+                              Id = x.PlaceId,
+                              RoverNumber = x.RoverBuilders.Select(t => t.Rovers.Count()).FirstOrDefault()
+                          };
+
+            return builder.FirstOrDefault();
         }
     }
 
     public class RoverTraveled
     {
         public int VisitedPlaceId { get; set; }
-        public int Builders { get; set; }
+
+        public DateTime Landing { get; set; }
+        public string Name { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            RoverTraveled planet = obj as RoverTraveled;
+            if (planet == null)
+                return false;
+            else
+            {
+                return this.VisitedPlaceId == planet.VisitedPlaceId
+                    && this.Landing == planet.Landing
+                    && this.Name == planet.Name;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(this.VisitedPlaceId, this.Landing, this.Name);
+        }
+    }
+
+    public class RoverNumberByPlanet
+    {
+        public int Id { get; set; }
+        public int RoverNumber { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            RoverNumberByPlanet planet = obj as RoverNumberByPlanet;
+            if (planet == null)
+                return false;
+            else
+            {
+                return this.Id == planet.Id
+                    && this.RoverNumber == planet.RoverNumber;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(this.Id, this.RoverNumber);
+        }
     }
 }
