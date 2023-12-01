@@ -22,7 +22,10 @@ namespace DEAIC6_HFT_2023241.Repository
             var Old = Read(element.RoverId);
             foreach(var prop in Old.GetType().GetProperties())
             {
-                prop.SetValue(Old, prop.GetValue(element));
+                if (prop.GetAccessors().FirstOrDefault(t => t.IsVirtual) == null)
+                {
+                    prop.SetValue(Old, prop.GetValue(element));
+                }
             }
             ctx.SaveChanges();
         }
