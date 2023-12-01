@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DEAIC6_HFT_2023241.Repository
 {
-    internal class VisitedPlacesRepository : Repository<VisitedPlaces>, IRepository<VisitedPlaces>
+    public class VisitedPlacesRepository : Repository<VisitedPlaces>, IRepository<VisitedPlaces>
     {
         public VisitedPlacesRepository(RoverDbContext ctx) : base(ctx)
         { }
@@ -22,7 +22,10 @@ namespace DEAIC6_HFT_2023241.Repository
             var Old = Read(element.PlaceId);
             foreach (var prop in Old.GetType().GetProperties())
             {
-                prop.SetValue(Old, prop.GetValue(element));
+                if (prop.GetAccessors().FirstOrDefault(t => t.IsVirtual) == null)
+                {
+                    prop.SetValue(Old, prop.GetValue(element));
+                }
             }
             ctx.SaveChanges();
         }
