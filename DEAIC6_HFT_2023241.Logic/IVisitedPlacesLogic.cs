@@ -12,6 +12,6 @@ namespace DEAIC6_HFT_2023241.Logic
         VisitedPlaces Read(int id);
         IQueryable<VisitedPlaces> ReadAll();
         void Update(VisitedPlaces Element);
-        IEnumerable<RoverTraveled> VisitedByBuilder();
+        IEnumerable<RoverTraveled> VisitedByLaunchDate();
     }
 }
