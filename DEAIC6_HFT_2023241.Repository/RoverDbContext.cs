@@ -24,9 +24,9 @@ namespace DEAIC6_HFT_2023241.Repository
             if (!builder.IsConfigured)
             {
                 //Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\hanyv\source\repos\DEAIC6_HFT_2023241\DEAIC6_HFT_2023241.Repository\Rovers.mdf;Integrated Security=True
-                string conn = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:|DataDirectory|Rovers.mdf;Integrated Security=True";
+                //string conn = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:|DataDirectory|Rovers.mdf;Integrated Security=True";
                 builder
-                .UseInMemoryDatabase(conn)
+                .UseInMemoryDatabase("roverdb")
                 .UseLazyLoadingProxies();
                 
             }
