@@ -26,7 +26,7 @@ namespace DEAIC6_HFT_2023241.Test
             List<RoverBuilder> builders = new List<RoverBuilder>()
             {
                 new RoverBuilder("11#Builder1#33"),
-                new RoverBuilder("12#Builder2#33"),
+                new RoverBuilder("12#Builder2#35"),
                 new RoverBuilder("13#Builder3#35")
             };
 
@@ -34,7 +34,7 @@ namespace DEAIC6_HFT_2023241.Test
             VisitedPlaces planet1 = new VisitedPlaces("35#Planet2#Type2#1000");
 
             builders[0].VisitedPlaces = planet;
-            builders[1].VisitedPlaces = planet;
+            builders[1].VisitedPlaces = planet1;
             builders[2].VisitedPlaces = planet1;
 
             mockBuilderRepo.Setup(m => m.ReadAll()).Returns(builders.AsQueryable());
@@ -45,8 +45,8 @@ namespace DEAIC6_HFT_2023241.Test
         public void MoreVisitedPlacesTest()
         {
             //planet with most builders
-            var result = logic.MoreVisitedPlaces();
-            var expected = new MaxRoverNumber() { Id = 33, BuilderNumber = 2, Name = "Planet1" };
+            var result = logic.BuilderWithMostVisitedPlaces();
+            var expected = new Logic.MaxBuilderNumber() { Id =  35, BuilderNumber = 2};
 
             Assert.AreEqual(expected, result);
         }
@@ -55,20 +55,20 @@ namespace DEAIC6_HFT_2023241.Test
         public void RoverBuildTest()
         {
             //order builder by distance
-            var result = logic.RoverBuild().ToList();
-            var expected = new List<RoverBuilded>()
+            var result = logic.BuilderDistance().ToList();
+            var expected = new List<Logic.RoverBuilded>()
             {
-                new RoverBuilded()
+                new Logic.RoverBuilded()
                 {
                     Id = 13,
                     Distance = 1000
                 },
-                new RoverBuilded()
+                new Logic.RoverBuilded()
                 {
                     Id = 11,
                     Distance = 100
                 },
-                new RoverBuilded()
+                new Logic.RoverBuilded()
                 {
                     Id = 12,
                     Distance = 100
@@ -88,18 +88,13 @@ namespace DEAIC6_HFT_2023241.Test
         }
 
         [Test]
-        public void CreateRoverTestInCorrect()
+        public void CreateBuilderTestInCorrect()
         {
             RoverBuilder testBuilder = new RoverBuilder("-1##33");
-            try
-            {
-                logic.Create(testBuilder);
-            }
-            catch
-            {
 
-            }
-
+            var exp = Assert.Throws<ArgumentException>(() => logic.Create(testBuilder));
+            Assert.AreEqual("Cannot create RoverBuilder without name!/" +
+                "RoverBuilderId cannot be null!", exp.Message);
             mockBuilderRepo.Verify(m => m.Create(testBuilder), Times.Never);
         }
     }
