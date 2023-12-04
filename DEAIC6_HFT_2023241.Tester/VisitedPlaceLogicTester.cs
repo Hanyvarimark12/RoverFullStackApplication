@@ -30,12 +30,14 @@ namespace DEAIC6_HFT_2023241.Test
             };
 
             RoverBuilder rb1 = new RoverBuilder("11#Builder1#33");
-            RoverBuilder rb2 = new RoverBuilder("12#Builder1#35");
+            RoverBuilder rb2 = new RoverBuilder("12#Builder2#35");
+            RoverBuilder rb3 = new RoverBuilder("13#Builder3#33");
 
             Rover r1 = new Rover("1#Rover1#2014.01.01#2014.02.02#11");
             Rover r2 = new Rover("2#Rover2#2015.01.01#2015.02.02#11");
             Rover r3 = new Rover("3#Rover3#2016.01.01#2016.02.02#11");
             Rover r4 = new Rover("4#Rover4#2017.01.01#2017.02.02#12");
+            Rover r5 = new Rover("5#Rover4#2017.01.01#2017.02.02#12");
 
             rb1.Rovers.Add(r1);
             rb1.Rovers.Add(r2);
@@ -43,6 +45,7 @@ namespace DEAIC6_HFT_2023241.Test
             rb2.Rovers.Add(r4);
 
             planets[0].RoverBuilders.Add(rb1);
+            planets[0].RoverBuilders.Add(rb3);
             planets[1].RoverBuilders.Add(rb2);
 
 
@@ -54,7 +57,7 @@ namespace DEAIC6_HFT_2023241.Test
         public void MostRoverNumberTester()
         {
             var result = logic.MostRoverNumber();
-            RoverNumberByPlanet expected = new RoverNumberByPlanet() { Id = 33, RoverNumber = 3 };
+            Logic.RoverNumberByPlanet expected = new Logic.RoverNumberByPlanet() { Id = 33, RoverNumber = 2 };
 
             Assert.AreEqual(expected, result);
         }
@@ -63,19 +66,19 @@ namespace DEAIC6_HFT_2023241.Test
         public void VisitedByBuilderTester()
         {
             //launch date
-            var result = logic.VisitedByBuilder();
-            var expected = new List<RoverTraveled>()
+            var result = logic.VisitedByLaunchDate();
+            var expected = new List<Logic.RoverTraveled>()
             {
-                new RoverTraveled()
+                new Logic.RoverTraveled()
                 {
                     VisitedPlaceId = 33,
-                    Landing = new DateTime(2014,01,01),
+                    Launching = new DateTime(2014,01,01),
                     Name = "Planet1"
                 },
-                new RoverTraveled()
+                new Logic.RoverTraveled()
                 {
                     VisitedPlaceId = 35,
-                    Landing = new DateTime(2017,01,01),
+                    Launching = new DateTime(2017,01,01),
                     Name = "Planet2"
                 }
             };
