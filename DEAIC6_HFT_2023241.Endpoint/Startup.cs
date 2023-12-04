@@ -20,8 +20,10 @@ namespace DEAIC6_HFT_2023241.Endpoint
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        //<PackageReference Include = "Microsoft.OpenApi" Version="1.2.3" />
+        //<PackageReference Include = "Swashbuckle.AspNetCore.Swagger" Version="5.6.3" />
+        //<PackageReference Include = "Swashbuckle.AspNetCore.SwaggerGen" Version="5.6.3" />
+        //<PackageReference Include = "Swashbuckle.AspNetCore.SwaggerGenUI" Version="5.6.3" />
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -61,6 +63,7 @@ namespace DEAIC6_HFT_2023241.Endpoint
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "DEAIC6_HFT_2023241_API");
                 c.RoutePrefix = string.Empty;
+                //swagger
             });
 
             app.UseExceptionHandler(c => c.Run(async context =>
