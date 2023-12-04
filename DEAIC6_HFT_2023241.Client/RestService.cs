@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieDbApp.Client
+namespace DEAIC6_HFT_2023241.Client
 {
     class RestService
     {
