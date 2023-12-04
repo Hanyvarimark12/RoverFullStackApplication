@@ -60,7 +60,7 @@ namespace DEAIC6_HFT_2023241.Logic
             this.builder_repo.Update(Element);
         }
 
-        public IEnumerable<RoverBuilded> RoverBuild()
+        public IEnumerable<RoverBuilded> BuilderDistance()
         {
             //builder order by distance
             return from x in this.builder_repo.ReadAll()
@@ -72,20 +72,18 @@ namespace DEAIC6_HFT_2023241.Logic
                                 };
         }
 
-        public MaxRoverNumber MoreVisitedPlaces()
+        public MaxBuilderNumber BuilderWithMostVisitedPlaces()
         {
-            //visitedplace with most builders
             var builderOnPlanet = from x in this.builder_repo.ReadAll()
                                   group x by x.VisitedPlaceId into g
                                   orderby g.Count() descending
-                                  select new MaxRoverNumber()
+                                  select new MaxBuilderNumber()
                                   {
                                       Id = g.Key,
-                                      BuilderNumber = g.Count(),
-                                      Name = g.Select(t => t.VisitedPlaces.PlanetName).FirstOrDefault()
+                                      BuilderNumber = g.Count()
                                   };
 
-            return builderOnPlanet.FirstOrDefault();
+            return builderOnPlanet.ToList()[0];
         }
     }
 
@@ -112,28 +110,26 @@ namespace DEAIC6_HFT_2023241.Logic
         }
     }
 
-    public class MaxRoverNumber
+    public class MaxBuilderNumber
     {
         public int Id { get; set; }
-        public string Name { get; set; }
         public int BuilderNumber { get; set; }
 
         public override bool Equals(object obj)
         {
-            MaxRoverNumber planet = obj as MaxRoverNumber;
+            MaxBuilderNumber planet = obj as MaxBuilderNumber;
             if (planet == null)
                 return false;
             else
             {
-                return this.Id == planet.Id
-                    && this.BuilderNumber == planet.BuilderNumber
-                    && this.Name == planet.Name;
+                return this.BuilderNumber == planet.BuilderNumber
+                    && this.Id == planet.Id;
             }
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(this.Id, this.BuilderNumber, this.Name);
+            return HashCode.Combine(this.BuilderNumber, this.Id);
         }
     }
 }
