@@ -54,7 +54,7 @@ namespace DEAIC6_HFT_2023241.Logic
             this.visitedplaces_repo.Update(Element);
         }
 
-        public IEnumerable<RoverTraveled> VisitedByBuilder()
+        public IEnumerable<RoverTraveled> VisitedByLaunchDate()
         {
             //avg time to planet
             var builder = from x in visitedplaces_repo.ReadAll()
@@ -62,7 +62,7 @@ namespace DEAIC6_HFT_2023241.Logic
                           select new RoverTraveled()
                           {
                               VisitedPlaceId = x.PlaceId,
-                              Landing = x.RoverBuilders.Select(t => t.Rovers.Min(t => t.LaunchDate)).FirstOrDefault(),
+                              Launching = x.RoverBuilders.Select(t => t.Rovers.Min(t => t.LaunchDate)).FirstOrDefault(),
                               Name = x.PlanetName
                           };
 
@@ -73,15 +73,14 @@ namespace DEAIC6_HFT_2023241.Logic
 
         public RoverNumberByPlanet MostRoverNumber()
         {
-            //builder sent the most rover to planet
-            var builder = from x in visitedplaces_repo.ReadAll()
-                          orderby x.RoverBuilders.Select(t => t.Rovers.Count()).First() descending
+            //builderwithmostvisited
+            var builder = from x in this.visitedplaces_repo.ReadAll()
+                          orderby x.RoverBuilders.Count() descending
                           select new RoverNumberByPlanet()
                           {
                               Id = x.PlaceId,
-                              RoverNumber = x.RoverBuilders.Select(t => t.Rovers.Count()).FirstOrDefault()
+                              RoverNumber = x.RoverBuilders.Count()
                           };
-
             return builder.FirstOrDefault();
         }
     }
@@ -90,7 +89,7 @@ namespace DEAIC6_HFT_2023241.Logic
     {
         public int VisitedPlaceId { get; set; }
 
-        public DateTime Landing { get; set; }
+        public DateTime Launching { get; set; }
         public string Name { get; set; }
 
         public override bool Equals(object obj)
@@ -101,14 +100,14 @@ namespace DEAIC6_HFT_2023241.Logic
             else
             {
                 return this.VisitedPlaceId == planet.VisitedPlaceId
-                    && this.Landing == planet.Landing
+                    && this.Launching == planet.Launching
                     && this.Name == planet.Name;
             }
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(this.VisitedPlaceId, this.Landing, this.Name);
+            return HashCode.Combine(this.VisitedPlaceId, this.Launching, this.Name);
         }
     }
 
