@@ -44,14 +44,14 @@ namespace DEAIC6_HFT_2023241.Tester
         public void BuilderRoversTester()
         {
             var result = logic.BuilderRovers().ToList();
-            var expected = new List<RoverNumber>()
+            var expected = new List<Logic.RoverNumber>()
             {
-                new RoverNumber()
+                new Logic.RoverNumber()
                 {
                     BuilderId = 6,
                     Number = 3
                 },
-                new RoverNumber()
+                new Logic.RoverNumber()
                 {
                     BuilderId = 7,
                     Number = 1
