@@ -23,6 +23,8 @@ namespace DEAIC6_HFT_2023241.Client
                  .Add("Create", () => VisitedPlaceCreate("VisitedPlace"))
                  .Add("Delete", () => VisitedPlaceDelete("VisitedPlace"))
                  .Add("Update", () => VisitedPlaceUpdate("VisitedPlace"))
+                 .Add("Planets Ordered By Launch Date", () => VisitedByLaunchDate("VisitedPlace"))
+                 .Add("Planet with most Rover", () => MostRoverNumber("VisitedPlace"))
                  .Add("Exit", ConsoleMenu.Close);
 
             var builderSubMenu = new ConsoleMenu(args, level: 1)
@@ -298,8 +300,8 @@ namespace DEAIC6_HFT_2023241.Client
             //id == 0 distance == 0
             if(entity == "RoverBuilder")
             {
-                var builderdistance = rest.Get<RoverBuilded>("roverbuilder");
-                foreach(var builders in builderdistance)
+                var dist = rest.Get<RoverBuilded>("/Stat/BuilderDistance");
+                foreach(var builders in dist)
                 {
                     Console.WriteLine("Builder Id: " + builders.Id + " distance traveled to planets by builder: " + builders.Distance);
                 }
@@ -312,20 +314,44 @@ namespace DEAIC6_HFT_2023241.Client
             //cannot deserialize json array
             if(entity == "RoverBuilder")
             {
-                var builderDistant = rest.GetSingle<MaxBuilderNumber>("roverbuilder");
+                var builderDistant = rest.GetSingle<MaxBuilderNumber>("/Stat/BuilderWithMostVisitedPlaces");
                 Console.WriteLine("Builder with the most distant place visited: " + builderDistant.Name + " " + builderDistant.BuilderNumber);
             }
+            Console.ReadLine();
         }
 
         static void BuilderRovers(string entity)
         {
             if(entity == "Rover")
             {
-                var builders = rest.Get<RoverNumber>("rover");
+                var builders = rest.Get<RoverNumber>("/Stat/BuilderRovers");
                 foreach (var builder in builders)
                 {
                     Console.WriteLine("Builder Id: " + builder.BuilderId + " rover count: " + builder.Number);
                 }
+            }
+            Console.ReadLine();
+        }
+
+        static void VisitedByLaunchDate(string entity)
+        {
+            if(entity == "VisitedPlace")
+            {
+                var planets = rest.Get<RoverTraveled>("/Stat/VisitedByLaunchDate");
+                foreach (var planet in planets)
+                {
+                    Console.WriteLine("Name of the planet: " + planet.Name + "  Rovers first launch date to planet: " + planet.Launching);
+                }
+            }
+            Console.ReadLine();
+        }
+
+        static void MostRoverNumber(string entity)
+        {
+            if(entity == "VisitedPlace")
+            {
+                var planet = rest.GetSingle<RoverNumberByPlanet>("/Stat/MostRoverNumber");
+                Console.WriteLine("Planet with most rovers: " + planet.Id + "  Number of rovers: " + planet.RoverNumber);
             }
             Console.ReadLine();
         }
