@@ -12,15 +12,10 @@ namespace DEAIC6_HFT_2023241.Logic
     public class RoverBuilderLogic : IRoverBuilderLogic
     {
         IRepository<RoverBuilder> builder_repo;
-        //IRepository<Rover> rover_repo;
-        //IRepository<VisitedPlaces> visitedplaces_repo;
 
         public RoverBuilderLogic(IRepository<RoverBuilder> builder_repo)
         {
             this.builder_repo = builder_repo;
-            //IRepository<Rover> rover_repo
-            //this.rover_repo = rover_repo;
-            //this.visitedplaces_repo = visitedplaces_repo;
         }
 
         public void Create(RoverBuilder element)
@@ -62,7 +57,6 @@ namespace DEAIC6_HFT_2023241.Logic
 
         public IEnumerable<RoverBuilded> BuilderDistance()
         {
-            //builder order by distance
             return from x in this.builder_repo.ReadAll()
                                 orderby x.VisitedPlaces.Distance descending
                                 select new RoverBuilded()
