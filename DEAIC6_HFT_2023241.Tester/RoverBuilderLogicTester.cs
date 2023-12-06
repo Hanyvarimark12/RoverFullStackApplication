@@ -60,17 +60,17 @@ namespace DEAIC6_HFT_2023241.Test
             {
                 new Logic.RoverBuilded()
                 {
+                    Id = 12,
+                    Distance = 1000
+                },
+                new Logic.RoverBuilded()
+                {
                     Id = 13,
                     Distance = 1000
                 },
                 new Logic.RoverBuilded()
                 {
                     Id = 11,
-                    Distance = 100
-                },
-                new Logic.RoverBuilded()
-                {
-                    Id = 12,
                     Distance = 100
                 }
             };
