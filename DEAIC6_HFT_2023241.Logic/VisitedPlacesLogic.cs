@@ -73,7 +73,6 @@ namespace DEAIC6_HFT_2023241.Logic
 
         public RoverNumberByPlanet MostRoverNumber()
         {
-            //builderwithmostvisited
             var builder = from x in this.visitedplaces_repo.ReadAll()
                           orderby x.RoverBuilders.Count() descending
                           select new RoverNumberByPlanet()
