@@ -23,8 +23,6 @@ namespace DEAIC6_HFT_2023241.Repository
         {
             if (!builder.IsConfigured)
             {
-                //Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\hanyv\source\repos\DEAIC6_HFT_2023241\DEAIC6_HFT_2023241.Repository\Rovers.mdf;Integrated Security=True
-                //string conn = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:|DataDirectory|Rovers.mdf;Integrated Security=True";
                 builder
                 .UseInMemoryDatabase("roverdb")
                 .UseLazyLoadingProxies();
@@ -34,47 +32,11 @@ namespace DEAIC6_HFT_2023241.Repository
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Rover>()
-            //.HasOne(Rover => Rover.RoverBuilders)
-            //.WithMany(roverbuilder => roverbuilder.Rovers)
-            
-
-            //modelBuilder.Entity<Rover>()
-            //   .HasOne(Rover => Rover.VisitedPlaces)
-            //   .WithMany(VisitedPlaces => VisitedPlaces.Rovers);
-
-            //modelBuilder.Entity<RoverBuilder>(RoverBuilder => RoverBuilder.HasMany<VisitedPlaces>()
-            //    .WithMany(VisitedPlaces => VisitedPlaces.RoverBuilders)
-            //    .UsingEntity<Rover>(
-            //        x => x.HasOne(x => x.VisitedPlaces)
-            //            .WithMany().HasForeignKey(x => x.VisitedPlaceId).OnDelete(DeleteBehavior.Cascade),
-            //        x => x.HasOne(x => x.RoverBuilders)
-            //            .WithMany().HasForeignKey(x => x.BuilderId).OnDelete(DeleteBehavior.Cascade))
-            //);
-            //1 visited place with more roverb
-            //1 roverbuilder to more places
-            //rover connects VisitedPlace to RoverBuilder 
-            //modelBuilder.Entity<VisitedPlaces>(VisitedPlanet => VisitedPlanet.HasMany<RoverBuilder>()
-            //.WithMany(RoverBuilder => RoverBuilder.VisitedPlaces)
-            //.UsingEntity<Rover>(
-            //    x => x.HasOne(x => x.RoverBuilders)
-            //        .WithMany().HasForeignKey(x => x.BuilderId).OnDelete(DeleteBehavior.Cascade),
-            //    x => x.HasOne(x => x.VisitedPlaces)
-            //        .WithMany().HasForeignKey(x => x.VisitedPlaceId).OnDelete(DeleteBehavior.Cascade)
-            //    )
-            //);
-
             modelBuilder.Entity<Rover>(rover => rover
                 .HasOne(rover => rover.RoverBuilder)
                 .WithMany(roverBuilder => roverBuilder.Rovers)
                 .OnDelete(DeleteBehavior.Cascade)
             );
-
-
-
-            //modelBuilder.Entity<Rover>()
-            //   .HasOne(Rover => Rover.VisitedPlaces)
-            //   .WithMany(VisitedPlaces => VisitedPlaces.Rovers);
 
             modelBuilder.Entity<RoverBuilder>(builder => builder
                 .HasMany(builder => builder.Rovers)
@@ -82,16 +44,14 @@ namespace DEAIC6_HFT_2023241.Repository
                 .HasForeignKey(builder => builder.RoverId)
                 .OnDelete(DeleteBehavior.Cascade)
             );
-            //1 visited place with more roverb
-            //1 roverbuilder to more places
-            //rover connects VisitedPlace to RoverBuilder 
+            
             modelBuilder.Entity<VisitedPlaces>(VisitedPlanet => VisitedPlanet
                 .HasMany(visitedplanet => visitedplanet.RoverBuilders)
                 .WithOne(roverbuilder => roverbuilder.VisitedPlaces)
                 .HasForeignKey(VisitedPlanet => VisitedPlanet.BuilderId)
                 .OnDelete(DeleteBehavior.Cascade)
             );
-            //RoverId#RoverName#LaunchDate#LandDate#VisitedPlaceId#BuilderId
+            
             modelBuilder.Entity<Rover>().HasData(new Rover[]
             {
                 new Rover("1#Curiosity#2011.11.26#2021.11.22#1"),
@@ -105,9 +65,9 @@ namespace DEAIC6_HFT_2023241.Repository
                 new Rover("9#Ispace Rover#2024.01.01#2024.01.07#4"),
                 new Rover("10#Zhurong#2021.05.14#2022.05.14#2"),
                 new Rover("11#Pragyan#2019.01.06#2019.01.15#5")
-                //ISRO
+                
             });
-            //BuilderId#BuilderName#VisitedPlaceId
+            
             modelBuilder.Entity<RoverBuilder>().HasData(new RoverBuilder[] {
                 new RoverBuilder("1#NAS#2"),
                 new RoverBuilder("2#CNSA#2"),
@@ -116,8 +76,7 @@ namespace DEAIC6_HFT_2023241.Repository
                 new RoverBuilder("5#ISRO#1"),
                 new RoverBuilder("6#JAXA#3")
             });
-            //rover roverBuilder MM, VisitedPlaces rover, OM, 
-            //PlaceId#PlanetName#PlanetType#Distance#RoverId
+            
             modelBuilder.Entity<VisitedPlaces>().HasData(new VisitedPlaces[] {
                 new VisitedPlaces("1#Moon#Moon#384000#"),
                 new VisitedPlaces("2#Mars#Planet#225000000#"),
