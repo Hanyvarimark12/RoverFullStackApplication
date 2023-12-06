@@ -14,8 +14,6 @@ namespace DEAIC6_HFT_2023241.Client
         static RestService rest;
         static void Main(string[] args)
         {
-            //http://localhost:27408/index.html
-            //swagger
             rest = new RestService("http://localhost:27408/", "rover");
 
             var planetSubMenu = new ConsoleMenu(args, level: 1)
@@ -24,7 +22,7 @@ namespace DEAIC6_HFT_2023241.Client
                  .Add("Delete", () => VisitedPlaceDelete("VisitedPlace"))
                  .Add("Update", () => VisitedPlaceUpdate("VisitedPlace"))
                  .Add("Planets Ordered By Launch Date", () => VisitedByLaunchDate("VisitedPlace"))
-                 .Add("Planet with most Rover", () => MostRoverNumber("VisitedPlace"))
+                 .Add("Planet with most Builder", () => MostRoverNumber("VisitedPlace"))
                  .Add("Exit", ConsoleMenu.Close);
 
             var builderSubMenu = new ConsoleMenu(args, level: 1)
